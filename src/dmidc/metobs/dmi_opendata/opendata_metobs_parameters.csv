@@ -1,0 +1,48 @@
+name,unit,description,update_frequency,available_for_denmark,available_for_greenland
+temp_dry,°C,Present air temperature measured 2 m over terrain,10 min,X,X
+temp_dew,°C,Present dew point temperature measured 2 m over terrain,10 min,X,X
+temp_mean_past1h,°C,Latest hour's mean air temperature measured 2 m over terrain,Hourly,X,X
+temp_max_past1h,°C,Latest hour's maximum air temperature measured 2 m over terrain,Hourly,X,X
+temp_min_past1h,°C,Latest hour's minimum air temperature measured 2 m over terrain,Hourly,X,X
+temp_max_past12h,°C,Last 12 hours maximum air temperature measured 2 m above ground. Measured at 0600 and 1800 UTC.,Twice a day,X,X
+temp_min_past12h,°C,Last 12 hours minimum air temperature measured 2 m above ground. Measured at 0600 and 1800 UTC.,Twice a day,X,X
+temp_grass,°C,Present air temperature measured at grass height (5-20 cm over terrain),10 min,X,
+temp_grass_max_past1h,°C,Latest hour's maximum air temperature measured at grass height (5-20 cm over terrain),Hourly,X,
+temp_grass_mean_past1h,°C,Latest hour's mean air temperature measured at grass height (5-20 cm over terrain),Hourly,X,
+temp_grass_min_past1h,°C,Latest hour's minimum air temperature measured at grass height (5-20 cm over terrain),Hourly,X,
+temp_soil,°C,Present temperature measured at a depth of 10 cm,10 min,X,
+temp_soil_max_past1h,°C,Latest hour's maximum temperature measured at a depth of 10 cm,Hourly,X,
+temp_soil_mean_past1h,°C,Latest hour's mean temperature measured at a depth of 10 cm,Hourly,X,
+temp_soil_min_past1h,°C,Latest hour's minimum temperature measured at a depth of 10 cm,Hourly,X,
+humidity,%,Present relative humidity measured 2 m over terrain,10 min,X,X
+humidity_past1h,%,Latest hour's mean for relative humidity measured 2 m over terrain,Hourly,X,X
+pressure,hPa,Atmospheric pressure at station level,10 min,X,X
+pressure_at_sea,hPa,Atmospheric pressure reduced to mean sea level,10 min,X,X
+wind_dir,degree,Latest 10 minutes' mean wind direction measured 10 m over terrain. 0 means calm (see Codes),10 min,X,X
+wind_dir_past1h,degree,Latest hour's mean wind direction measured 10 m over terrain,Hourly,X,X
+wind_speed,m/s,Latest 10 minutes' mean wind speed measured 10 m over terrain,10 min,X,X
+wind_speed_past1h,m/s,Latest hour's mean wind speed measured 10 m over terrain,Hourly,X,X
+wind_gust_always_past1h,m/s,Latest hour's highest 3 seconds mean wind speed measured 10 m over terrain,Hourly,X,X
+wind_max,m/s,Latest 10 minutes' highest 3 seconds mean wind speed measured 10 m over terrain,10 min,X,X
+wind_min_past1h,m/s,Latest hours lowest 3 second mean wind speed measured 10 m over terrain,Hourly,X,X
+wind_min,m/s,Latest 10 minutes' lowest 3 seconds mean wind speed measured 10 m over terrain,10 min,X,X
+wind_max_per10min_past1h,m/s,Maximum 10-minute average wind speed in the one hour period preceding the time of observation,Hourly,X,X
+precip_past1h,kg/m²,"Accumulated precipitation in the latest hour or the code -0,1, which means ""traces of precipitation, less than 0.1 kg/m²"". kg/m² is equivalent to mm. (see Codes)",Hourly,X,X
+precip_past10min,kg/m²,Accumulated precipitation in the latest 10 minutes. kg/m² is equivalent to mm.,10 min,X,X
+precip_past1min,kg/m²,Accumulated precipitation in the latest minute. kg/m² is equivalent to mm.,10 min,X,
+precip_past24h,kg/m²,"Accumulated precipitation in the latest 24 hours or the code -0,1, which means ""traces of precipitation, less than 0.1 kg/m²"". kg/m² is equivalent to mm. (see Codes)",Daily,,X
+precip_dur_past10min,minutes,Number of minutes with precipitation in the latest 10 minutes,10 min,X,
+precip_dur_past1h,minutes,Number of minutes with precipitation in the latest hour,Hourly,X,
+snow_depth_man,cm,"Snow depth (measured manually) or the code -1, which means ""less than 0.5 cm"" (see Codes)",Daily,X,
+snow_cover_man,enum,"Snow cover (measured manually), specified as quarters of the earth covered ",Daily,X,
+visibility,m,Present visibility,10 min,X,X
+visib_mean_last10min,m,Latest 10 minutes' mean visibility,10 min,X,X
+cloud_cover,%,The fraction of the sky covered by cloud of any type or height above the ground (see also Codes),10 min,X,X
+cloud_height,m,Height to the lowest clouds. No value returned under cloud free conditions.,10 min,X,X
+weather,enum,Present weather (see Codes),10 min,X,X
+radia_glob,W/m²,Latest 10 minutes global radiation mean intensity,10 min,X,X
+radia_glob_past1h,W/m²,Mean intensity of global radiation in the latest hour,10 min,X,X
+sun_last10min_glob,minutes,Number of minutes with sunshine the latest 10 minutes,10 min,X,
+sun_last1h_glob,minutes,Number of minutes with sunshine the latest hour,Hourly,X,
+leav_hum_dur_past10min,minutes,Number of minutes with leaf moisture the latest 10 minutes,10 min,X,
+leav_hum_dur_past1h,minutes,Number of minutes with leaf moisture the latest hour,Hourly,X,

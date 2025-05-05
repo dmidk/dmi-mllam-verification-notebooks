@@ -36,6 +36,16 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.AWS_REGION }}
           
+      - name: Configure DMI Open Data
+        run: |
+          if [ -z "${{ secrets.DMI_OPENDATA_API_KEY }}" ]; then
+            echo "DMI_OPENDATA_API_KEY is not set."
+            echo "Please set it in the repository secrets."
+            exit 1
+          else
+            echo "DMI_OPENDATA_API_KEY=${{ secrets.DMI_OPENDATA_API_KEY }}" >> $GITHUB_ENV
+          fi
+          
       - name: Set S3 bucket name
         run: |
           if [ -z "${{ vars.S3_BUCKET_NAME }}" ]; then
@@ -55,12 +65,6 @@ jobs:
 
       - name: Install dependencies
         run: uv pip install --system --editable .
-
-      - name: Load config values into environment
-        run: |
-          pip install python-dotenv
-          eval "$(python src/config.py)"
-        shell: bash
 
       - name: Clean Jupyter Book outputs
         run: jupyter-book clean notebooks/

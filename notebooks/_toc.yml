@@ -1,4 +1,4 @@
 format: jb-book
 root: index
 chapters:
-- file: my_notebook
+- file: danish_synop_stations

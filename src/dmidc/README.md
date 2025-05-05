@@ -1,0 +1,1 @@
+This directory contains code lifted and refactored from https://github.com/leifdenby/dmi-data-catalog/tree/main that should eventually be cleaned up, packaged, and published to PyPI.
