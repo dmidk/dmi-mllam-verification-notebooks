@@ -1,0 +1,104 @@
+### This workflow builds a Jupyter Book and uploads it to an S3 bucket.
+# Expected github secrets:
+#    AWS_ACCESS_KEY_ID: AWS access key ID (for uploading to S3)
+#    AWS_SECRET_ACCESS_KEY: AWS secret access key (for uploading to S3)
+#    S3_BUCKET_NAME: Name of the S3 bucket to upload the Jupyter Book
+# Workflow dispatch inputs (become inputs to the Jupyter Book through Papermill):
+#    analysis_time: ISO8601 timestamp to identify the dataset version
+#    model_name: Name of the model used in the analysis
+name: Build Jupyter Book and upload to S3
+
+on:
+  workflow_dispatch:
+    inputs:
+      analysis_time:
+        description: 'ISO8601 timestamp to identify the dataset version'
+        required: true
+      model_name:
+        description: 'Name of the model used in the analysis'
+        required: true
+
+jobs:
+  build-book:
+    runs-on: ubuntu-latest
+    env:
+      ANALYSIS_TIME: ${{ github.event.inputs.analysis_time }}
+      MODEL_NAME: ${{ github.event.inputs.model_name }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+          
+      - name: Set S3 bucket name
+        run: |
+          if [ -z "${{ vars.S3_BUCKET_NAME }}" ]; then
+            echo "S3_BUCKET_NAME is not set. Exiting."
+            exit 1
+          else
+            echo "S3_BUCKET_NAME=${{ vars.S3_BUCKET_NAME }}" >> $GITHUB_ENV
+          fi
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v1
+
+      - name: Install dependencies
+        run: uv pip install --system --editable .
+
+      - name: Load config values into environment
+        run: |
+          pip install python-dotenv
+          eval "$(python src/config.py)"
+        shell: bash
+
+      - name: Clean Jupyter Book outputs
+        run: jupyter-book clean notebooks/
+
+      - name: Execute notebooks with papermill (glob)
+        run: |
+          mkdir -p notebooks/output
+          shopt -s nullglob
+          notebooks=(notebooks/*.ipynb)
+          for nb in "${notebooks[@]}"; do
+            base=$(basename "$nb")
+            echo "📘 Executing $nb"
+            papermill "$nb" "notebooks/output/$base" \
+              -p analysis_time "${ANALYSIS_TIME}" \
+              -p model_name "${MODEL_NAME}"
+          done
+        shell: bash
+
+      - name: Replace source notebooks with executed ones
+        run: cp notebooks/output/*.ipynb notebooks/
+        
+      - name: Inject repository URL into _config.yml
+        run: uv run book_setup
+
+      - name: Build Jupyter Book
+        run: jupyter-book build notebooks/ --builder html
+
+      - name: Install s5cmd
+        run: |
+          curl -sSL https://github.com/peak/s5cmd/releases/download/v2.3.0/s5cmd_2.3.0_Linux-64bit.tar.gz | tar -xz
+          sudo mv s5cmd /usr/local/bin/
+
+      - name: Upload Jupyter Book to S3 using s5cmd
+        run: |
+          s5cmd cp --cache-control "public, max-age=60" "notebooks/_build/html/*" "s3://${S3_BUCKET_NAME}/${MODEL_NAME}/${ANALYSIS_TIME}/"
+          
+      # print HTTP path to the uploaded book
+      - name: Print HTTP path to the uploaded book
+        run: |
+          echo "Jupyter Book is available at: https://$S3_BUCKET_NAME.s3.amazonaws.com/${MODEL_NAME}/${ANALYSIS_TIME}/index.html"
+        shell: bash

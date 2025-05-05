@@ -1,0 +1,30 @@
+[project]
+name = "dmi-mlverif-notebooks"
+version = "0.1.0"
+requires-python = ">=3.9"
+dependencies = [
+    "jupyter-book",
+    "papermill",
+    "pandas",
+    "requests",
+    "python-dotenv",
+    "gitpython",
+    "loguru",
+    "pyyaml",
+    "isodate>=0.7.2",
+]
+
+[project.scripts]
+trigger_mlverif_build = "dmi_mlverif_notebooks.trigger_workflow:main"
+create_dummy_data = "dmi_mlverif_notebooks.create_dummy_data:main"
+book_setup = "dmi_mlverif_notebooks.book_setup:main"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
